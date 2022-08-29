@@ -6,6 +6,8 @@
       <div :class="{'fixed-header':fixedHeader}">
         <navbar />
       </div>
+      <!-- 放置tagview -->
+      <tags-view />
       <app-main />
     </div>
   </div>

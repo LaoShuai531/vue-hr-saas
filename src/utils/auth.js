@@ -1,6 +1,8 @@
 import Cookies from 'js-cookie'
 
-const TokenKey = 'vue_admin_template_token'
+const TokenKey = 'hr-saas-111-token'
+
+const timeKey = 'hr-sass-time-key' // 用来作为时间戳存储的key
 
 export function getToken() {
   return Cookies.get(TokenKey)
@@ -12,4 +14,14 @@ export function setToken(token) {
 
 export function removeToken() {
   return Cookies.remove(TokenKey)
+}
+
+export function setTimeStamp() {
+  // 设置当前最新的时间戳
+  // Date.now()  new Date.getTime()
+  Cookies.set(timeKey, Date.now())
+}
+
+export function getTimeStamp() {
+  return Cookies.get(timeKey)
 }

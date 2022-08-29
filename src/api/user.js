@@ -1,24 +1,25 @@
 import request from '@/utils/request'
 
 export function login(data) {
+  // 返回了promise对象
   return request({
-    url: '/vue-admin-template/user/login',
+    url: '/sys/login',
     method: 'post',
-    data
+    data // body参数体位于data
   })
 }
-
-export function getInfo(token) {
+export function getUserInfo() {
   return request({
-    url: '/vue-admin-template/user/info',
-    method: 'get',
-    params: { token }
+    url: '/sys/profile',
+    method: 'post'
+  })
+}
+export function getUserDetailById(id) {
+  return request({
+    url: `/sys/user/${id}`
   })
 }
 
 export function logout() {
-  return request({
-    url: '/vue-admin-template/user/logout',
-    method: 'post'
-  })
+
 }
