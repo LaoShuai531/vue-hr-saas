@@ -1,19 +1,28 @@
+// permission.js是控制页面登录权限的文件
+// 权限拦截在路由跳转的时候做
+// 权限拦截 导航守卫 路由守卫 router
 // 路由的拦截权限问题
-import router from '@/router'
-import store from '@/store'
-import NProgress from 'nprogress'
+import router from '@/router' // 引入路由实例
+import store from '@/store' // 引入vuex store实例和组件中的this.$store是一回事
+// 不需要导出，只需要让代码执行即可
+import NProgress from 'nprogress' // 引入一份进度条插件
 import 'nprogress/nprogress.css' // 引入进度条样式
 
+const whiteList = ['/login', '/404'] // 定义白名单 所有不受权限控制的页面
+
 // 前置守卫
-const whileList = ['/login', '/404']
+// 路由的导航守卫，主要作用：页面的权限拦截（前置守卫）
+// next 是前置守卫 必须执行的钩子函数  next必须执行 如果不执行 页面就死了
+// next() 放过
+// next(false) 跳转终止
+// next(地址) 跳转到某个地址
 router.beforeEach(async (to, from, next) => {
   NProgress.start() // 开启进度条
-  // next是一个必须执行的钩子 不执行就卡主了
+  // next是一个必须执行的钩子 不执行就卡住了
   if (store.getters.token) {
+    // 如果有token
     if (to.path === '/login') {
-      // next() 放行
-      // next(false) 终止
-      // next(地址) 跳到某个 地址
+      // 如果要访问的是 登录页则跳到主页
       next('/') // 跳到主页
     } else {
       // 要判断是不是已经获取过资料了
@@ -34,17 +43,21 @@ router.beforeEach(async (to, from, next) => {
       }
     }
   } else {
-    if (whileList.indexOf(to.path) > -1) {
-      // 表示在白名单里面
-      next()
+    /* 没有token的情况下 */
+    if (whiteList.indexOf(to.path) !== -1) {
+      // 表示要去的地址在白名单中
+      next() // 放行
     } else {
+      // 其他没有访问权限的页面将被重定向到登录页面。
+      // next(`/login?redirect=${to.path}`)
       next('/login')
     }
   }
-  NProgress.done() // 是为了解决手动输入地址时 进度条不关闭的问题
+  NProgress.done() // 手动强制关闭一次 为了解决 手动切换地址时 进度条的不关闭的问题
 })
 
 // 后置守卫
 router.afterEach(() => {
+  // 关闭进度条
   NProgress.done()
 })

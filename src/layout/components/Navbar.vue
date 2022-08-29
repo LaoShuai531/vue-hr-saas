@@ -2,8 +2,8 @@
   <div class="navbar">
     <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
     <div class="app-breadcrumb">
-      江苏传智播客教育科技股份有限公司
-      <span class="breadBtn">体验版</span>
+      湖北武汉人力资源后台管理系统
+      <span class="breadBtn">后台版</span>
     </div>
     <!-- <breadcrumb class="breadcrumb-container" /> -->
 
@@ -26,7 +26,7 @@
               首页
             </el-dropdown-item>
           </router-link>
-          <a target="_blank" href="https://gitee.com/shuiruohanyu/hrsaas111">
+          <a target="_blank" href="https://github.com/LaoShuai531/vue-hr-saas">
             <el-dropdown-item>项目地址</el-dropdown-item>
           </a>
           <el-dropdown-item divided @click.native="logout">

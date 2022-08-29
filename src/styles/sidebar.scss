@@ -28,7 +28,8 @@
 
     .scrollbar-wrapper {
       overflow-x: hidden !important;
-        background: url('~@/assets/common/leftnavBg.png') no-repeat 0 100%;
+      // 需要在样式表中使用**@别名的时候，需要在@前面加上一个~**符号，否则不识别
+      background: url('~@/assets/common/leftnavBg.png') no-repeat 0 100%;
     }
 
     .el-scrollbar__bar.is-vertical {
