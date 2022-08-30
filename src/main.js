@@ -11,6 +11,7 @@ import '@/styles/index.scss' // global css
 import App from './App'
 import store from './store'
 import router from './router'
+// import * as 变量 得到的是一个对象{ 变量1:对象1, 变量2:对象2...},所以可以采用对象遍历的方法进行处理
 import * as directives from '@/directives'
 import * as filters from '@/filters'
 import Components from '@/components'
@@ -19,10 +20,13 @@ import checkPermission from '@/mixin/checkPermission'
 import i18n from '@/lang' // 引入i18n实例
 import '@/icons' // icon
 import '@/permission' // permission control
-// directives是所有指令的一个集合
+
+// directives是所有指令的一个集合，转换为数组类型，然后再数组遍历
 Object.keys(directives).forEach(key => {
-// key就是指令名称
-  Vue.directive(key, directives[key])
+  // key就是指令名称
+  // console.log(key);
+  // console.log(directives[key]); // 这是一个对象形式
+  Vue.directive(key, directives[key]) // 注册自定义指令
 })
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])

@@ -26,11 +26,11 @@
               首页
             </el-dropdown-item>
           </router-link>
-          <a target="_blank" href="https://gitee.com/shuiruohanyu/hrsaas111">
+          <a target="_blank" href="https://github.com/LaoShuai531/vue-hr-saas">
             <el-dropdown-item>项目地址</el-dropdown-item>
           </a>
           <el-dropdown-item divided @click.native="logout">
-            <span style="display:block;">登出</span>
+            <span style="display:block;">退出登录</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -49,11 +49,12 @@ export default {
   data() {
     return {
       // 源代码   => 编译 => vue-cli来控制  => 浏览器
-      // 当相对图片地址不确定的时候 需要用requrie来包裹
+      // 当相对图片地址不确定的时候 不能直接写路径 需要用requrie来包裹
       defaultImg: require('@/assets/common/head.jpg') // 相当于将图片转化成了变量 编译的时候 会将图片的新地址进行赋值
     }
   },
   computed: {
+    // getters的辅助函数
     ...mapGetters([
       'sidebar',
       'name',
@@ -65,9 +66,9 @@ export default {
       this.$store.dispatch('app/toggleSideBar')
     },
     async logout() {
-      await this.$store.dispatch('user/lgout') // 调用登出的action
-      // 必须等到删除完token之后 才去跳转到登录页面
-      this.$router.push('/login')
+      await this.$store.dispatch('user/logout') // 调用登出的action
+      // 必须等到删除完token之后 才去跳转到登录页面 所以要用到await
+      this.$router.push('/login') // 直接跳转到登录页
       //
     }
   }

@@ -5,15 +5,15 @@ import store from '@/store'
 import router from '@/router'
 const TimeOut = 5400 // 定义超时时间
 const service = axios.create({
-//    设置基础地址
-// 环境变量 npm run dev  /api   /生产环境 npm run build  /prod-api
+  //    设置基础地址
+  // 环境变量 npm run dev  /api   /生产环境 npm run build  /prod-api
   baseURL: process.env.VUE_APP_BASE_API,
   timeout: 10000 // 认为只要超过5秒钟不响应 就超时
 })
 // 请求拦截器
 service.interceptors.request.use(async config => {
-  // 请求接口  config是请求配置
-  // 取token
+  // 请求接口  config是请求配置信息
+  // 取token(在这个位置需要统一的去注入token)
   if (store.getters.token) {
     // 只要有token 就要检查token时效性
     if (CheckIsTimeOut()) {
@@ -22,7 +22,7 @@ service.interceptors.request.use(async config => {
       router.push('/login') // 跳到登录
       return Promise.reject(new Error('您的token已经失效'))
     }
-    // 如果存在token
+    // 如果存在token，注入token
     config.headers.Authorization = `Bearer ${store.getters.token}`
     // return config
   }
@@ -30,7 +30,7 @@ service.interceptors.request.use(async config => {
   // 一定要return config
   return config
 }, error => {
-  return Promise.reject(error)
+  return Promise.reject(error) // 停止
 })
 // 响应拦截器
 service.interceptors.response.use(response => {

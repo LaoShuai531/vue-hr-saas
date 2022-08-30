@@ -25,12 +25,15 @@ router.beforeEach(async (to, from, next) => {
       // 如果要访问的是 登录页则跳到主页
       next('/') // 跳到主页
     } else {
-      // 要判断是不是已经获取过资料了
+      // 只有在放过通行的时候才要去获取用户资料
+      // 同时要判断是不是已经获取过资料了
+      // 如果当前vuex中有用户的资料的id 表示 已经有资料了 不需要获取了 如果没有id才需要获取
       if (!store.getters.userId) {
         // 如果id不存在 意味着当前没有用户资料 就要去获取用户资料
-        // vuex的action是一个promise
+        // vuex的action是一个promise对象
         const { roles } = await store.dispatch('user/getUserInfo')
         // 此时已经获取完资料
+        // 同时因为这里是异步的，如果说后续 需要根据用户资料来获取数据的话 这里必须改成同步，用await
         const routes = await store.dispatch('permission/filterRoutes', roles.menus)
         // 此时得到的routes是当前用户的所拥有的的动态路由的权限
         router.addRoutes([...routes, { path: '*', redirect: '/404', hidden: true }]) // 将当前动态路由加到当前路由规则上
