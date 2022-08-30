@@ -26,7 +26,7 @@
               首页
             </el-dropdown-item>
           </router-link>
-          <a target="_blank" href="https://github.com/LaoShuai531/vue-hr-saas">
+          <a target="_blank" href="https://gitee.com/shuiruohanyu/hrsaas111">
             <el-dropdown-item>项目地址</el-dropdown-item>
           </a>
           <el-dropdown-item divided @click.native="logout">

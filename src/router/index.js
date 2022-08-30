@@ -94,7 +94,7 @@ const createRouter = () => new Router({
   mode: 'history', // require service support
   base: '/hrsaas/',
   scrollBehavior: () => ({ y: 0 }),
-  routes: [...constantRoutes] // 动态路由和静态路由的临时合并
+  routes: [...constantRoutes, ...asyncRoutes] // 动态路由和静态路由的临时合并
 })
 
 const router = createRouter()

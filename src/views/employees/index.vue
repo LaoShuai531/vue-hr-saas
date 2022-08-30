@@ -48,7 +48,7 @@
               <el-switch :value="row.enableState === 1" />
             </template>
           </el-table-column>
-          <el-table-column label="操作" sortable="" fixed="right" width="280">
+          <el-table-column label="操作" sortable="" width="280">
             <template v-slot="{ row }">
               <el-button type="text" size="small" @click="$router.push(`/employees/detail/${row.id}`)">查看</el-button>
               <el-button type="text" size="small">转正</el-button>
@@ -124,6 +124,7 @@ export default {
     },
     // 格式化聘用形式的属性方法
     formatEmployment(row, column, cellValue, index) {
+      console.log(row)
       const obj = EmployeeEnum.hireType.find(item => item.id === cellValue)
       return obj ? obj.value : '未知'
       // cellValue是当前单元格的值

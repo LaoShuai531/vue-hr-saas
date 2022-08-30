@@ -37,7 +37,7 @@
       <el-row class="inline-info">
         <el-col :span="12">
           <el-form-item label="手机">
-            <el-input v-model="userInfo.mobile" disabled />
+            <el-input v-model="userInfo.mobile"  />
           </el-form-item>
         </el-col>
         <el-col :span="12">
