@@ -1,17 +1,22 @@
 import { getToken, setToken, removeToken, setTimeStamp } from '@/utils/auth'
 import { login, getUserInfo, getUserDetailById } from '@/api/user'
 import { resetRouter } from '@/router'
+
+// 放置状态
 const state = {
-  token: getToken(), // 设置token为共享
+  // 如何实现vuex内的状态持久化？其实就是将vuex的状态和本地缓存进行结合
+  token: getToken(), // 设置token为共享状态 一初始化vuex的时候 就先从缓存中读
   userInfo: {} // 这里为什么不写null ?因为后边我们会在getters中引用userInfo的变量，如果设置为null，则会报错
 }
+// 修改状态
 const mutations = {
-  // 设置token的mutations
+  // 设置token
   setToken(state, token) {
     state.token = token // 只是设置了vuex中的数据
-    // 需要将vuex中的数据同步到缓存
+    // token一旦发生变化 就需要将vuex中的数据同步到缓存
     setToken(token)
   },
+  // 删除缓存
   removeToken(state) {
     state.token = null // 设置vuex中的token为null
     removeToken() // 同步删除缓存中的token
@@ -26,20 +31,35 @@ const mutations = {
     state.userInfo = {} // 重置为空对象，同样不能重置为null
   }
 }
+// 处理异步操作
 const actions = {
   // 封装一个登录的action
   // data认为是 { mobile,password }
   // 只要用async标记了函数 那么这个函数本身就是promise对象
   async login(context, data) {
-    // 调用登录接口
-    // login(data).then(result => {
-
+    // 调用api登录接口
+    // 方法一，利用Promise
+    // return new Promise(function (resolve) {
+    //   login(data).then(result => {
+    //     if (result.data.success) {
+    //       context.commit('setToken', result.data.data)
+    //       resolve() // 表示执行成功了
+    //     }
+    //   })
     // })
-    // await下方永远都是 reslove成功执行的逻辑
-    const result = await login(data)
-    // result就是token
-    context.commit('setToken', result)
 
+    // 方法二，利用async和await
+    // await下方永远都是 reslove成功执行的逻辑
+    const result = await login(data) // 拿到token
+    // axios默认加了一层data
+    // if (result.data.success) {
+    // 如果为true，表示登录成功,也就意味着你的用户名和密码是正确的
+    // actions 修改state 必须通过mutations
+    // context.commit('setToken', result.data.data)
+
+    // result就是token
+    context.commit('setToken', result) // 设置token
+    // 拿到token说明登录成功
     setTimeStamp() // 设置时间戳
   },
   // 获取用户资料
@@ -65,6 +85,7 @@ const actions = {
     // this.$store.commit('permission/setRoutes')
   }
 }
+
 export default {
   namespaced: true,
   state,

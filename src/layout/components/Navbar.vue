@@ -69,7 +69,6 @@ export default {
       await this.$store.dispatch('user/logout') // 调用登出的action
       // 必须等到删除完token之后 才去跳转到登录页面 所以要用到await
       this.$router.push('/login') // 直接跳转到登录页
-      //
     }
   }
 }

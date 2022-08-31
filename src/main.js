@@ -26,7 +26,7 @@ Object.keys(directives).forEach(key => {
   // key就是指令名称
   // console.log(key);
   // console.log(directives[key]); // 这是一个对象形式
-  Vue.directive(key, directives[key]) // 注册自定义指令
+  Vue.directive(key, directives[key]) // vue注册自定义指令
 })
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])

@@ -4,11 +4,12 @@ import request from '@/utils/request'
  * 登录接口封装
 * **/
 export function login(data) {
-  // 返回了promise对象
+  // 使用return返回了一个promise对象
   return request({
-    url: '/sys/login',
+    url: '/sys/login', // 因为所有的接口都要跨域 表示所有的接口要带 /api
     method: 'post',
-    data // body参数体位于data
+    data // body参数体位于data data请求体参数
+    // params //  是路径参数
   })
 }
 /** *

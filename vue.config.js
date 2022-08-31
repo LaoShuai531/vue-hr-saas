@@ -65,7 +65,7 @@ module.exports = {
       warnings: false,
       errors: true
     },
-    // 代理选项
+    // 代理选项（配置vue-cli的反向代理，实现后端接口的跨域访问）
     // 可以有多个代理选项
     proxy: {
       // key表示如果一旦请求地址和它吻合 ，就会触发代理，代理的信息 在对象 value
@@ -74,13 +74,14 @@ module.exports = {
 
       '/api': {
         // target: 'http://localhost:3000', // 要代理的目标地址
-        target: 'http://ihrm-java.itheima.net', // 要代理的目标地址
+        target: 'http://ihrm-java.itheima.net', // 要代理的目标地址 这里不用写api
         changeOrigin: true // 是否跨域
         // localhost:8888/api/user => 触发代理 =>
         //  http://www.baidu.com/user  想要这种
         //  http://www.baidu.com/api/user  下面是目前的
         // pathRewrite: {
-        //   '^/api': '' // 相当于将跨域代理之后的地址进行再次替换 就可以将 /api去掉
+        // 重写路由 localhost:8888/api/login => http://ihrm-java.itheima.net/api/login
+        //   '^/api': '' // 相当于将跨域代理之后的地址进行再次替换 就可以将 /api去掉 最后变成 http://ihrm-java.itheima.net/login 此时我们需要/api
         // }
       }
     }

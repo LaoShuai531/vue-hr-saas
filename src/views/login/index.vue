@@ -37,6 +37,7 @@
           auto-complete="on"
           @keyup.enter.native="handleLogin"
         />
+        <!-- enter 是按键的修饰符 native也是修饰符表示监听组件的原生事件 -->
         <span class="show-pwd" @click="showPwd">
           <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
         </span>
@@ -61,10 +62,11 @@
 
 <script>
 import { validMobile } from '@/utils/validate'
-import { mapActions } from 'vuex'
+import { mapActions } from 'vuex' // 辅助函数的形式来处理加锁（namespaced）
 export default {
   name: 'Login',
   data() {
+    // 定义自定义函数来校验规则
     const validateMobile = (rule, value, callback) => {
       // value是否符合手机号格式
       validMobile(value) ? callback() : callback(new Error('手机号格式不正确'))
@@ -80,11 +82,12 @@ export default {
         password: '123456'
       },
       loginRules: {
+        // trigger 校验的触发方式 blur/change
         mobile: [{ required: true, trigger: 'blur', message: '请输入手机号' }, {
           trigger: 'blur',
           validator: validateMobile// 校验手机号
         }],
-        // 校验规则
+        // 校验规则也可以使用正则表达式
         // min   max  校验的字符串 指的是长度 校验的是数字 校验的大小
         password: [{ required: true, trigger: 'blur', message: '请输入密码' }, {
           min: 6, max: 16, message: '密码长度在6-16位之间', trigger: 'blur'
@@ -104,7 +107,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['user/login']),
+    ...mapActions(['user/login']), // 引入方法
     showPwd() {
       if (this.passwordType === 'password') {
         this.passwordType = ''
@@ -115,21 +118,24 @@ export default {
         this.$refs.password.focus()
       })
     },
-    // 登录
+    // 登录（点击登录或者回车enter）
     handleLogin() {
+      // 表单的手动校验
       this.$refs.loginForm.validate(async isOK => {
         if (isOK) {
-          // 表示校验通过
-          this.loading = true
+          this.loading = true // 登录之前把loading打开
+          // 表示校验通过，这样我们才能去调用action
           try {
             await this['user/login'](this.loginForm)
             // 只要进行到这个位置 说明登录成功了 跳到主页
+            // async标记的函数实际上是一个Promise对象
+            // await下面的代码 都是成功执行的代码
             this.$router.push('/')
           } catch (error) {
-            //
+            // console.log(error) //在utils/request.js中的响应拦截器中已经弹过了，所以此处无需输出错误信息
           } finally {
-            // finally是和trycatch配套的 不论你执行不执行catch都会执行finally
-            this.loading = false
+            // finally是和try、catch配套的 不论你执行不执行catch都会执行finally
+            this.loading = false // 成功登录之后把loading关闭
           }
         }
       })
@@ -143,8 +149,8 @@ export default {
 /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
 
 $bg:#283443;
-$light_gray: #68b0fe;
-$cursor: #fff;
+$light_gray: #68b0fe; // 将输入框颜色改为蓝色
+$cursor: #fff; // 光标颜色
 
 @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
   .login-container .el-input input {
@@ -155,7 +161,7 @@ $cursor: #fff;
 /* reset element-ui css */
 .login-container {
   background-image: url('~@/assets/common/login.jpg');
-  background-position: center;
+  background-position: center; // 图片居中平铺
   .el-input {
     display: inline-block;
     height: 47px;
@@ -185,7 +191,7 @@ $cursor: #fff;
     color: #454545;
   }
    .el-form-item__error {
-    color: #fff
+    color: rgb(235, 47, 47);
   }
   .loginBtn {
   background: #407ffe;

@@ -1,5 +1,5 @@
 /**
- * Created by PanJiaChen on 16/11/18.
+ * 手动校验规则的文件
  */
 
 /**
@@ -18,8 +18,8 @@ export function validUsername(str) {
   const valid_map = ['admin', 'editor']
   return valid_map.indexOf(str.trim()) >= 0
 }
-/*
-  校验手机号
+/**
+ * 校验手机号的方法
 **/
 export function validMobile(str) {
   return /^1[3-9]\d{9}$/.test(str)
