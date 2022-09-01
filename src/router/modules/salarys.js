@@ -1,6 +1,6 @@
-
 import Layout from '@/layout'
 
+// 工资模块
 const salaryRouter = {
   path: '/salarys',
   component: Layout,

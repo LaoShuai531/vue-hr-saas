@@ -39,11 +39,12 @@ import Layout from '@/layout'
  * a base page that does not have permission requirements
  * all roles can be accessed
  */
+// 静态路由
 export const constantRoutes = [
   {
     path: '/login',
     component: () => import('@/views/login/index'),
-    hidden: true
+    hidden: true // 当路由中的属性hidden为true时，表示该路由不显示在左侧菜单中
   },
 
   {
@@ -79,7 +80,9 @@ export const constantRoutes = [
   // 404 page must be placed at the end !!!
   // { path: '*', redirect: '/404', hidden: true }
 ]
+
 // 动态路由的变量
+// 这里导出这个变量 后面做权限的时候会用到
 export const asyncRoutes = [
   approvalsRouter,
   departmentsRouter,
@@ -97,7 +100,7 @@ const createRouter = () => new Router({
   routes: [...constantRoutes, ...asyncRoutes] // 动态路由和静态路由的临时合并
 })
 
-const router = createRouter()
+const router = createRouter() // 实例化一个路由
 
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {

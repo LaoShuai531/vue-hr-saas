@@ -1,5 +1,6 @@
 import Layout from '@/layout'
-// 审批模块路由规则
+// 组织架构模块的路由规则
+// 组织架构模块
 export default {
   path: '/departments', // 地址
   name: 'departments', // 给每一个路由规则加一个name 加它的目的是用于后面的权限设置

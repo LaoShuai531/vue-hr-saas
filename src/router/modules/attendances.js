@@ -1,6 +1,6 @@
-
 import Layout from '@/layout'
 
+// 考勤模块
 const attendRouter = {
   path: '/attendances',
   component: Layout,
@@ -12,7 +12,8 @@ const attendRouter = {
       name: 'attendances',
       meta: {
         title: '考勤',
-        icon: 'excel' }
+        icon: 'excel'
+      }
     },
     {
       path: 'archiving',

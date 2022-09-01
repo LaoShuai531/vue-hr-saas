@@ -1,5 +1,6 @@
 import Layout from '@/layout'
 
+// 审批模块
 export default {
   path: '/approvals',
   component: Layout,
@@ -21,7 +22,8 @@ export default {
       hidden: true,
       meta: {
         title: '工资审核',
-        icon: 'approval', noCache: true }
+        icon: 'approval', noCache: true
+      }
     },
     {
       path: 'enterApproval/:id',
@@ -30,7 +32,8 @@ export default {
       hidden: true,
       meta: {
         title: '入职审核',
-        icon: 'approval', noCache: true }
+        icon: 'approval', noCache: true
+      }
     },
     {
       path: 'leaveApproval/:id',
@@ -39,7 +42,8 @@ export default {
       hidden: true,
       meta: {
         title: '申请请假',
-        icon: 'approval', noCache: true }
+        icon: 'approval', noCache: true
+      }
     },
     {
       path: 'quitApproval/:id',
@@ -48,7 +52,8 @@ export default {
       hidden: true,
       meta: {
         title: '申请离职',
-        icon: 'approval', noCache: true }
+        icon: 'approval', noCache: true
+      }
     },
     {
       path: 'overtimeApproval/:id',
@@ -57,7 +62,8 @@ export default {
       hidden: true,
       meta: {
         title: '加班申请',
-        icon: 'approval', noCache: true }
+        icon: 'approval', noCache: true
+      }
     },
     {
       path: 'securitySetting',
@@ -66,7 +72,8 @@ export default {
       hidden: true,
       meta: {
         title: '设置',
-        icon: 'approval', noCache: true }
+        icon: 'approval', noCache: true
+      }
     }
   ]
 }

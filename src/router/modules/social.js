@@ -1,6 +1,6 @@
-
 import Layout from '@/layout'
 
+// 社保模块
 export default {
   path: '/social_securitys',
   component: Layout,
