@@ -37,7 +37,7 @@
           <el-alert
             title="对公司名称、公司地址、营业执照、公司地区的更新，将使得公司资料被重新审核，请谨慎修改"
             type="info"
-            show-icon
+            :show-icon="true"
             :closable="false"
           />
           <el-form label-width="120px" style="margin-top:50px">

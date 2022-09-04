@@ -45,7 +45,7 @@ export function parseTime(time, cFormat) {
   const time_str = format.replace(/{([ymdhisa])+}/g, (result, key) => {
     const value = formatObj[key]
     // Note: getDay() returns 0 on Sunday
-    if (key === 'a') { return ['日', '一', '二', '三', '四', '五', '六'][value ] }
+    if (key === 'a') { return ['日', '一', '二', '三', '四', '五', '六'][value] }
     return value.toString().padStart(2, '0')
   })
   return time_str
@@ -117,17 +117,18 @@ export function param2Obj(url) {
 }
 
 // 将列表转化成树形结构数据的方法
-// 递归方法 自己调用自己, 每次调用自己时 需要传入不同的参数  而且要有跳出条件
+// 递归方法 自己调用自己, 每次调用自己时 需要传入不同的参数  而且要有跳出条件(一定条件不能一样，也就是第二个参数不能一样，否则就死循环)
 // list  [] => [{children: [{ chilrenr=}]}]
 export function transListToTreeData(list, rootValue) {
   var arr = []
   list.forEach(item => {
-    // 如果了节点的话
+    // 如果节点中的pid为空的话，说明是根节点
     if (item.pid === rootValue) {
-      // 找到了节点 => 要继续寻找该节点有没有子节点
+      // 找到了节点之后 => 要继续寻找该节点有没有子节点
       // 返回的数组 是 item的所有的子节点的集合
       const children = transListToTreeData(list, item.id)
       if (children.length) {
+        // 如果children的长度大于0 说明找到了子节点
         item.children = children
       }
       arr.push(item) // 把节点push到数组里面
