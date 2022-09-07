@@ -1,5 +1,5 @@
 <template>
-  <!-- 放置一个导入excel的组件 -->
+  <!-- 放置一个导入excel的组件 该组件是全局自定义组件 -->
   <upload-excel :on-success="onSuccess" />
 </template>
 
@@ -13,8 +13,9 @@ export default {
   },
   methods: {
     async onSuccess({ header, results }) {
+      // 此时header和results的数据都是中文，它应该和我们新增员工的属性是一致的
       if (this.type === 'user') {
-        //  header是 头部表头的集合
+      // header是 头部表头的集合
       // results是实际的数据
       // [{ username: '高小山', workNumber: 1002 }]
       // [{ 姓名: '高小山’，工号： 1002 }]
@@ -35,12 +36,12 @@ export default {
           Object.keys(item).map(key => {
           // key是中文的key  userRelations[key]是英文的
           // 判断是否是日期
-            if (userRelations[key] === 'timeOfEntry1' || userRelations[key] === 'correctionTime1') {
-            //  说明此时到了要转化日期 只要日期类型才需要转化
-            // java后端接口 要求 如果日期类型 必须传date类型
-              userInfo[userRelations[key]] = new Date(this.formatDate(item[key], '/'))
+            if (userRelations[key] === 'timeOfEntry' || userRelations[key] === 'correctionTime') {
+            // 说明此时到了要转化日期 只要日期类型才需要转化
+            // java后端接口 要求 如果日期类型 必须传Date类型
+              userInfo[userRelations[key]] = new Date(this.formatDate(item[key], '/')) // 只有这样 才能存入数据库
             } else {
-              userInfo[userRelations[key]] = item[key]
+              userInfo[userRelations[key]] = item[key] // 将原来中文对应的值 赋值给原来英文对应的值
             }
           })
           return userInfo
@@ -48,7 +49,7 @@ export default {
         // 拿到新数组 就可以将数组插入到数据库
         await importEmployee(newArr)
         this.$message.success('批量导入员工成功')
-        this.$router.back()
+        this.$router.back() // 然后回到上一个页面
       }
       // } else if (this.type === 'departs') {
 

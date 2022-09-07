@@ -13,8 +13,8 @@ import store from './store'
 import router from './router'
 // import * as 变量 得到的是一个对象{ 变量1:对象1, 变量2:对象2...},所以可以采用对象遍历的方法进行处理
 import * as directives from '@/directives'
-import * as filters from '@/filters'
-import Components from '@/components'
+import * as filters from '@/filters' // 引入工具类
+import Components from '@/components' // 导入全局注册的自定义组件
 import VuePrint from 'vue-print-nb'
 import checkPermission from '@/mixin/checkPermission'
 import i18n from '@/lang' // 引入i18n实例
@@ -28,7 +28,9 @@ Object.keys(directives).forEach(key => {
   // console.log(directives[key]); // 这是一个对象形式
   Vue.directive(key, directives[key]) // vue注册自定义指令
 })
+// 注册全局的过滤器
 Object.keys(filters).forEach(key => {
+  // 注册过滤器
   Vue.filter(key, filters[key])
 })
 Vue.use(Components) // 注册自己的自定义组件

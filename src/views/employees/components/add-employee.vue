@@ -34,13 +34,21 @@
         <el-input v-model="formData.departmentName" class="wp50" placeholder="请选择部门" @focus="getDepartments" />
         <!-- 放置一个树形组件 el-tree默认显示的字段 label 默认找节点的字段是children-->
         <!-- props -->
-        <el-tree v-if="showTree" v-loading="loading" :data="treeData" :props="defaultProps" :default-expand-all="true" @node-click="selectNode" />
+        <el-tree 
+          v-if="showTree" 
+          v-loading="loading" 
+          :data="treeData"
+          :props="defaultProps" 
+          :default-expand-all="true" 
+          @node-click="selectNode" 
+        />
       </el-form-item>
       <el-form-item label="转正时间" prop="correctionTime">
         <el-date-picker v-model="formData.correctionTime" class="wp50" placeholder="请选择转正时间" />
       </el-form-item>
     </el-form>
     <!-- 放置确定取消按钮 -->
+    <!-- footer插槽 -->
     <template v-slot:footer>
       <el-row type="flex" justify="center">
         <el-col :span="6">
@@ -53,7 +61,7 @@
 </template>
 
 <script>
-import { getDepartments } from '@/api/departments'
+import { getDepartments } from '@/api/departments' // 需要获得组织架构的数据的方法，所以引入接口
 import { addEmployee } from '@/api/employees'
 import { transListToTreeData } from '@/utils'
 import EmployeeEnum from '@/api/constant/employees'
@@ -68,6 +76,7 @@ export default {
     return {
       EmployeeEnum,
       // 是和接口对应的
+      // 定义表单数据
       formData: {
         username: '',
         mobile: '',
@@ -89,12 +98,13 @@ export default {
         }],
         formOfEmployment: [{ required: true, message: '请选择聘用形式', trigger: 'blur' }],
         workNumber: [{ required: true, message: '请输入工号', trigger: 'blur' }],
+        // 这里为啥将trigger设置为change呢？因为我们不想一离开焦点就去校验，我们一离开焦点就去选择组织结构去了
         departmentName: [{ required: true, message: '请选择部门', trigger: 'change' }],
         timeOfEntry: [{ required: true, message: '请选择入职时间', trigger: 'blur' }]
       },
-      treeData: [], // 用来存储树形数据
+      treeData: [], // 定义一个数组用来存储树形数据
       defaultProps: {
-        //   指定展示的字段为name
+        // 指定展示的字段为name
         label: 'name'
       }, // 用来表示 树形字段的一些配置信息
       showTree: false, // 控制树形组件的显示
@@ -109,26 +119,28 @@ export default {
       this.loading = true // 打开进度条
       this.showTree = true // 显示树形
       const { depts } = await getDepartments()
-      // 展示树形
+      // 展示树形，depts是一个数组 它需要转化为树形结构 才可以被 el-tree 显示
       this.treeData = transListToTreeData(depts, '') // 转化树形数据
-      this.loading = false
+      this.loading = false // 数据加载后关闭
     },
     selectNode(data) {
+      // console.log(arguments);
       this.formData.departmentName = data.name
       this.showTree = false
     },
     async btnOK() {
       // 调用新增接口
-
       try {
         await this.$refs.addEmployee.validate()
-        await addEmployee(this.formData)
+        // 校验成功后
+        await addEmployee(this.formData) // 调用新增接口
         this.$message.success('新增员工成功')
         // $parent 当前的父组件实例 用this.$parent的前提条件是 该组件不能位于 非原生组件内部 也就是 插槽内容
         // $children 当前的子组件集合
-        // $parent用的非常少 对于组件放置的位置有很高的要求，不能讲组件放置于类似element组件的内部
+        // $parent用的非常少 对于组件放置的位置有很高的要求，不能将组件放置于类似element组件的内部
         this.$parent.getEmployeeList && this.$parent.getEmployeeList()
         this.$parent.showDialog = false // 直接关闭弹层
+        // 这里不用重置数据 因为 关闭弹层触发了close事件 close事件绑定了btnCancel方法
       } catch (error) {
         console.log(error)
       }
@@ -150,6 +162,7 @@ export default {
       // 目前没有编辑业务，没有多出来的字段 resetFields方法可以满足现在的需求
       this.$refs.addEmployee.resetFields() // 重置表单校验和数据
       this.$emit('update:showDialog', false)
+      // update:prop名称 这么写的话 可以在父组件 直接用sync修饰符处理
     }
   }
 }

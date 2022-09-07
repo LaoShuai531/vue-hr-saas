@@ -2,27 +2,31 @@
   <el-card class="page-tools">
     <el-row type="flex" justify="space-between" align="middle">
       <el-col>
+        <!-- 前插槽 -->
         <div v-if="showBefore" class="before">
+          <!-- 提示图标 图标随着 showBefore的显示而显示-->
           <i class="el-icon-info" />
+          <!-- 有名的叫具名插槽，没名的叫匿名插槽 -->
           <slot name="before" />
         </div>
       </el-col>
       <el-col>
+        <!-- 后插槽 -->
         <el-row type="flex" justify="end">
           <slot name="after" />
         </el-row>
       </el-col>
-
     </el-row>
   </el-card>
 </template>
 
 <script>
+// 组件可以显示左侧内容，也可以显示右侧内容 如果左侧内容不传，图标内容应该不显示
 export default {
   props: {
     showBefore: {
       type: Boolean,
-      default: false
+      default: false // 默认不显示
     }
   }
 }

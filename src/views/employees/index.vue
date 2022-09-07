@@ -1,13 +1,16 @@
 <template>
   <div class="dashboard-container">
     <div class="app-container">
+      <!-- 全局封装的通用型工具栏组件 -->
       <page-tools :show-before="true">
+        <!-- 左侧显示总记录数 -->
         <!-- 插槽 -->
-        <!-- <template slot="after"> -->
         <template v-slot:before>
           <span>共{{ page.total }}条记录 </span>
         </template>
         <!-- v-bind: => :  v-on: => @  v-slot:  => # -->
+        <!-- 右侧显示按钮 Excel导入 Excel导出 新增员工 -->
+        <!-- <template slot="after"> -->
         <template #after>
           <el-button size="small" type="danger" @click="exportData">普通excel导出</el-button>
           <el-button size="small" type="info" @click="exportMutiData">复杂表头excel导出</el-button>
@@ -20,6 +23,8 @@
       <!-- 放置表格和分页 -->
       <el-card>
         <el-table v-loading="loading" :data="list" border stripe>
+          <!-- sortable可排序的意思 -->
+          <!-- 表格中如何显示序号：type="index" -->
           <el-table-column align="center" type="index" label="序号" sortable width="80" />
           <el-table-column prop="username" label="姓名" sortable />
           <el-table-column label="头像" align="center">
@@ -39,9 +44,15 @@
           <el-table-column prop="formOfEmployment" label="聘用形式" :formatter="formatEmployment" sortable />
           <el-table-column prop="departmentName" label="部门" sortable />
           <el-table-column prop="timeOfEntry" label="入职时间" sortable>
+            <!-- 利用作用域插槽 + 过滤器 -->
+            <!-- 通过row拿到当前结构渲染的数据 v-slot拿到obj对象，其下有一个row属性，该属性表示当前结构渲染的所有数据 -->
             <template slot-scope="{ row }">
+              <!-- 将时间进行格式化 -->
               {{ row.timeOfEntry | formatDate }}
             </template>
+            <!-- <template v-slot="{ row }">
+              {{ row.timeOfEntry | formatDate }}
+            </template> -->
           </el-table-column>
           <el-table-column prop="enableState" label="状态" sortable>
             <template v-slot="{ row }">
@@ -65,13 +76,14 @@
             :total="page.total"
             :page-size="page.size"
             :current-page.sync="page.page"
-            layout="total, prev,pager, next"
+            layout="total, prev, pager, next"
             @current-change="getEmployeeList"
           />
         </el-row>
       </el-card>
     </div>
-    <!-- 使用组件 -->
+    <!-- 放置组件弹层 -->
+    <!-- sync修饰符 是 子组件 去改变父组件的数据的一个语法糖 -->
     <!-- 这里为什么可以用sync 因为后面的变量是来源于data -->
     <!-- 子组件 this.$emit("update:showDialog", false) -->
     <add-employee :show-dialog.sync="showDialog" />
@@ -98,17 +110,17 @@ export default {
   components: { AddEmployee, AssignRole },
   data() {
     return {
-      showDialog: false,
+      showDialog: false, // 默认弹层是关闭的
       showCodeDialog: false, // 显示二维码的弹层
       showRoleDialog: false, // 分配角色弹层
       userId: null, // 记录当前点击的id
-      loading: false,
-      page: {
-        total: 0,
+      loading: false, // 页面开始加载会有一些卡顿，这时会显示遮罩层
+      page: { // 分页的一些参数数据
+        total: 0, // 总数
         page: 1,
         size: 10
       },
-      list: []
+      list: [] // 接收数组
     }
   },
   created() {
@@ -116,15 +128,16 @@ export default {
   },
   methods: {
     async getEmployeeList() {
-      this.loading = true
+      this.loading = true // loading可以在请求之前打开
       const { total, rows } = await getEmployeeList(this.page)
       this.page.total = total
       this.list = rows
-      this.loading = false
+      this.loading = false // loading可以在请求之后再关闭
     },
     // 格式化聘用形式的属性方法
     formatEmployment(row, column, cellValue, index) {
       console.log(row)
+      // 要去找 cellValue 1 所对应的值
       const obj = EmployeeEnum.hireType.find(item => item.id === cellValue)
       return obj ? obj.value : '未知'
       // cellValue是当前单元格的值
@@ -138,6 +151,18 @@ export default {
         this.getEmployeeList()
       })
     },
+    // async delEmployee(id) {
+    //   try {
+    //     await this.$confirm('确定删除该用户？')
+    //     // 点击了确定
+    //     await delEmployee(id)
+    //     this.$message.success('删除用户成功')
+    //     this.getEmployeeList() // 重新拉取数据
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // },
+
     // 导出数据
     exportData() {
       // 懒加载模块 => 只有当点击按钮的时候才去加载这个模块
@@ -152,6 +177,7 @@ export default {
       }
       import('@/vendor/Export2Excel').then(async excel => {
         // 获取所有的员工列表数据
+        // excel是引入文件的导出对象
         const { rows } = await getEmployeeList({ page: 1, size: this.page.total })
         // rows是所有的员工列表数据
         // [{ username: '张三', mobile: 123 }]  => [[ '张三', 123 ]]
@@ -240,9 +266,10 @@ export default {
       await this.$refs.assignRole.getUserDetailById(id)
       this.showRoleDialog = true
     }
+    // newPage是最新的页码
     // changePage(newPage) {
-    //   this.page.page = newPage
-    //   this.getEmployeeList()
+    //   this.page.page = newPage // 赋值最新的页码
+    //   this.getEmployeeList() // 重新拉取数据
     // }
   }
 }

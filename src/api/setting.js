@@ -1,11 +1,17 @@
 import request from '@/utils/request'
+
+/**
+ * 获取角色列表
+ **/
 export function getRoleList(params) {
   return request({
     url: '/sys/role',
-    params
+    params // 地址参数放的是params
   })
 }
-
+/**
+ * 删除角色ID
+ **/
 export function deleteRole(id) {
   return request({
     url: `/sys/role/${id}`,
@@ -23,7 +29,7 @@ export function updateRole(data) {
   })
 }
 /**
-   * 获取角色详情
+   * 编辑情况下获取具体的角色详情
    * **/
 export function getRoleDetail(id) {
   return request({

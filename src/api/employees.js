@@ -1,8 +1,9 @@
+// 封装员工的加载请求
 import request from '@/utils/request'
 
-/***
+/**
  * 获取员工的简单列表
- ***/
+ **/
 export function getEmployeeSimple() {
   return request({
     url: '/sys/user/simple'
@@ -19,15 +20,15 @@ export function getEmployeeList(params) {
 }
 /**
  * 删除员工
- * ***/
+**/
 export function delEmployee(id) {
   return request({
     url: `/sys/user/${id}`,
     method: 'delete'
   })
 }
-/*
-新增员工
+/**
+* 新增员工
 **/
 export function addEmployee(data) {
   return request({
@@ -36,7 +37,9 @@ export function addEmployee(data) {
     data
   })
 }
-/** ****批量导入员工接口 */
+/** 
+ * 批量导入员工接口 参数data是一个数组类型
+ **/
 export function importEmployee(data) {
   return request({
     url: '/sys/user/batch',
