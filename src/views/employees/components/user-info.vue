@@ -37,7 +37,7 @@
       <el-row class="inline-info">
         <el-col :span="12">
           <el-form-item label="手机">
-            <el-input v-model="userInfo.mobile"  />
+            <el-input v-model="userInfo.mobile" disabled/>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -363,7 +363,8 @@ export default {
     this.getPersonalDetail()
   },
   methods: {
-    async  getUserDetailById() {
+    // 在methods中定义一个同名的方法
+    async getUserDetailById() {
       this.userInfo = await getUserDetailById(this.userId)
       if (this.userInfo.staffPhoto.trim()) {
         // 如果它存在值

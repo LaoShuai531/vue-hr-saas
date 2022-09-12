@@ -1,3 +1,4 @@
+<!-- 查看的详情页 -->
 <template>
   <div class="dashboard-container">
     <div class="app-container">
@@ -27,6 +28,8 @@
             </el-row>
             <!-- <user-info /> -->
             <!-- component中的is必须是动态变量 -->
+            <!-- 我们使用了动态组件component，它通过is属性来绑定需要显示在该位置的组件，is属性可以直接为注册组件的组件名称即可 -->
+            <!-- 动态组件可以切换组件 -->
             <component :is="userInfo" />
           </el-tab-pane>
           <el-tab-pane label="岗位信息">
@@ -60,10 +63,10 @@ export default {
       // 将动态路由参数id赋值给了userId这个属性
       userInfo: 'user-info',
       jobInfo: 'job-info',
-      userId: this.$route.params.id,
+      userId: this.$route.params.id, // 直接将路由中的参数赋值给data中的属性
       formData: {
         username: '',
-        password2: ''
+        password2: '' // 为啥是password2 因为读取出来的password是密文
       },
       rules: {
         username: [{ required: true, message: '姓名不能为空', trigger: 'blur' }, { min: 1, max: 6, message: '姓名长度为1-4位', trigger: 'blur' }],
@@ -79,8 +82,10 @@ export default {
       this.formData = await getUserDetailById(this.userId)
     },
     saveUser() {
+      // 调用方法时 应该校验
       this.$refs.loginForm.validate(async isOK => {
         if (isOK) {
+          // 将新密码的值替换原密码的值
           await saveUserDetailById({ ...this.formData, password: this.formData.password2 })
           this.$message.success('修改账户信息成功')
         }

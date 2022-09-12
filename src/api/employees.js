@@ -47,9 +47,9 @@ export function importEmployee(data) {
     data
   })
 }
-/**
+/** *
  *  保存员工的基本信息
- * ***/
+ * **/
 export function saveUserDetailById(data) {
   return request({
     url: `/sys/user/${data.id}`,
@@ -88,9 +88,9 @@ export function getJobDetail(id) {
   })
 }
 
-/**
+/** *
  * 保存岗位信息
- * ****/
+ * **/
 export function updateJob(data) {
   return request({
     url: `/employees/${data.userId}/jobs`,
@@ -100,7 +100,7 @@ export function updateJob(data) {
 }
 /** *
  * 给用户分配角色
- * ***/
+ * **/
 export function assignRoles(data) {
   return request({
     url: '/sys/user/assignRoles',

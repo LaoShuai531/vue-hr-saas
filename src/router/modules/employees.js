@@ -17,16 +17,16 @@ export default {
       icon: 'people'
     }
   }, {
-    path: 'detail/:id', // 动态路由参数 /:id id必须填  不填跳不过去 /:id? ?表示id可填可不填
+    path: 'detail/:id', // 动态路由参数 /:id id必须填  不填跳不过去 /:id? ?表示id可填可不填 可以在id后加？ ？的含义表示该参数可传可不传
     component: () => import('@/views/employees/detail'),
     hidden: true, // 在左侧菜单隐藏
     meta: {
-      title: '员工详情'
+      title: '员工详情' // 标记当前路由规则的中文名称 后续在做左侧菜单时 使用
     }
   }, {
     path: 'print/:id', // 二级路由 写 /表示从根路径开始算  不写表示从 一级的路径开始算
     component: () => import('@/views/employees/print'),
-    hidden: true // 在左侧菜隐藏
+    hidden: true // 在左侧菜单隐藏
   }] // 二级路由组件
 }
 // /approvals => layout  =>

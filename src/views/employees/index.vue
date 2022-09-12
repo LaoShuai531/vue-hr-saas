@@ -177,7 +177,7 @@ export default {
       }
       import('@/vendor/Export2Excel').then(async excel => {
         // 获取所有的员工列表数据
-        // excel是引入文件的导出对象
+        // excel是引入文件的导出对象,其中header从哪里来 data从哪里来
         const { rows } = await getEmployeeList({ page: 1, size: this.page.total })
         // rows是所有的员工列表数据
         // [{ username: '张三', mobile: 123 }]  => [[ '张三', 123 ]]
@@ -186,13 +186,13 @@ export default {
         excel.export_json_to_excel({
           filename: '人力资源表',
           header: Object.keys(headers),
-          data: this.formatJSON(headers, rows)
+          data: this.formatJSON(headers, rows) // 返回的data就是 要导出的结构
         })
       })
     },
     // [{ username: '张三', mobile: 123 }]  => [[ '张三', 123 ]]
     // 数据的顺序是按照headers中key的顺序来的
-    // 格式化json数据
+    // 格式化json数据，将表头数据和数据进行对应
     formatJSON(headers, rows) {
       // rows 是一行一行的  =>  [{},{}] => [[],[]]
       return rows.map(item => {
@@ -213,6 +213,7 @@ export default {
       })
       // return rows.map(item => Object.keys(headers).map(key => item[headers[key]]))
     },
+    // 复杂表头
     exportMutiData() {
       // 懒加载模块 => 只有当点击按钮的时候才去加载这个模块
       const headers = {
